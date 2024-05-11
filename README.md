@@ -1,4 +1,8 @@
-# Beginner DE Project - Batch Edition
+# User Behaviour Metric
+
+## A Date Engineering Project - Batch Edition
+
+### This project is build upon a infrastructure template by https://github.com/josephmachado
 
 ### See detailed explanation at [Data engineering project: Batch edition](https://www.startdataengineering.com/post/data-engineering-project-for-beginners-batch-edition)
 

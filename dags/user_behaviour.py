@@ -67,11 +67,7 @@ user_purchase_stage_data_lake_to_stage_tbl = PythonOperator(
     task_id="user_purchase_stage_data_lake_to_stage_tbl",
     python_callable=run_redshift_external_query,
     op_kwargs={
-        "qry": "alter table spectrum.user_purchase_staging add \
-            if not exists partition(insert_date='{{ ds }}') \
-            location 's3://"
-        + BUCKET_NAME
-        + "/stage/user_purchase/{{ ds }}'",
+        "qry": "alter table spectrum.user_purchase_staging add if not exists partition(insert_date='{{ ds }}') location 's3://" + BUCKET_NAME + "/stage/user_purchase/{{ ds }}'",
     },
 )
 

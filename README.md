@@ -44,7 +44,7 @@ AWS has updated quite a few security settings, before you run the following IAC,
 
 1. In terraform/main.tf, modify ec2 instance ubuntu jammy 22.04 version to "20240501"
 2. Create default roles for AWS EMR, run the cmd: aws emr create-default-roles
-3. AWS has add more security measures to S3 bucket, follow this post to add the 'ownership' : https://stackoverflow.com/questions/76419099/access-denied-when-creating-s3-bucket-acl-s3-policy-using-terraform
+3. AWS has add more security measures to S3 bucket, follow this post to add the 'ownership' of S3 bucket to terraform/main.tf : https://stackoverflow.com/questions/76419099/access-denied-when-creating-s3-bucket-acl-s3-policy-using-terraform
 5. When access redshift_schema, we have to modify the default secuirty group inbound rule: Go to EC2 Instances -> Security Groups -> default -> Add rule, set 'All traffic' and 'My IP'
 
 Run these commands to setup your project locally and on the cloud.

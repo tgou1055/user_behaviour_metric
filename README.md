@@ -1,6 +1,6 @@
 # User Behaviour Metric
 
-## A Date Engineering Project - Batch Edition
+## A Date Engineering Project on AWS - Batch Edition
 
 ### This project is build upon a infrastructure template by https://github.com/josephmachado
 

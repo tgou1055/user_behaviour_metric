@@ -21,13 +21,34 @@ provider "aws" {
 # Create our S3 bucket (Datalake)
 resource "aws_s3_bucket" "sde-data-lake" {
   bucket_prefix = var.bucket_prefix
-  force_destroy = true
+  force_destroy = true	
 }
 
 resource "aws_s3_bucket_acl" "sde-data-lake-acl" {
   bucket = aws_s3_bucket.sde-data-lake.id
   acl    = "public-read-write"
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
 }
+
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
+  bucket = aws_s3_bucket.sde-data-lake.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+  depends_on = [aws_s3_bucket_public_access_block.example]
+}
+
+
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.sde-data-lake.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+
 
 # IAM role for EC2 to connect to AWS Redshift, S3, & EMR
 resource "aws_iam_role" "sde_ec2_iam_role" {
@@ -196,7 +217,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20220420"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20240501"]
   }
 
   filter {
@@ -245,7 +266,7 @@ sudo chmod 666 /var/run/docker.sock
 sudo apt install make
 
 echo 'Clone git repo to EC2'
-cd /home/ubuntu && git clone https://github.com/josephmachado/beginner_de_project.git && cd beginner_de_project && make perms
+cd /home/ubuntu && git clone ${var.repo_url} && cd ${var.repo_name} && make perms
 
 echo 'Setup Airflow environment variables'
 echo "

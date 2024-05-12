@@ -67,7 +67,11 @@ user_purchase_stage_data_lake_to_stage_tbl = PythonOperator(
     task_id="user_purchase_stage_data_lake_to_stage_tbl",
     python_callable=run_redshift_external_query,
     op_kwargs={
-        "qry": "alter table spectrum.user_purchase_staging add if not exists partition (insert_date='{{ ds }}') location 's3://" + BUCKET_NAME + "/stage/user_purchase/{{ ds }}'",
+        "qry": "alter table spectrum.user_purchase_staging add \
+            if not exists partition(insert_date='{{ ds }}') \
+            location 's3://"
+        + BUCKET_NAME
+        + "/stage/user_purchase/{{ ds }}'",
     },
 )
 
@@ -114,8 +118,8 @@ wait_for_movie_classification_transformation = EmrStepSensor(
     dag=dag,
     task_id="wait_for_movie_classification_transformation",
     job_flow_id=EMR_ID,
-    step_id='{{ task_instance.xcom_pull \
-    ("start_emr_movie_classification_script", key="return_value")['
+    step_id='{{ task_instance.xcom_pull\
+        ("start_emr_movie_classification_script", key="return_value")['
     + str(last_step)
     + "] }}",
     depends_on_past=True,
